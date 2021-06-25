@@ -42,18 +42,10 @@ protected:
 
     void makeMove() {
         auto chosenPos = getInput();
-        int xRow = (chosenPos / 3);
-        int yCol;
-        if (chosenPos % 3 == 0)
-        {
-            xRow = xRow - 1;
-            yCol = 2;
-        }
-        else
-        {
-            yCol = (chosenPos % 3) - 1;
-        }
-        setState(xRow, yCol, active_player);
+        int x = (chosenPos - 1)/3;
+        int y = (chosenPos - 1)%3;
+
+        setState(x, y, active_player);
         continueRoutine();
     }
 

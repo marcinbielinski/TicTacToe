@@ -128,9 +128,10 @@ protected:
             for (int j = 0; j < columns; ++j)
             {
                 if ((board[i][j] == active_player && board[i][j] == board[i + 1][j + 1] &&
-                     board[i + 1][j + 1] == board[i + 2][j + 2])
-                    || (board[i][j + 2] == active_player && board[i][j + 2] == board[i + 1][j + 1] &&
-                        board[i + 1][j + 1] == board[i + 2][j])) {
+                     board[i + 1][j + 1] == board[i + 2][j + 2]) ||
+                    (board[i][j + 2] == active_player && board[i][j + 2] == board[i + 1][j + 1] &&
+                     board[i + 1][j + 1] == board[i + 2][j]))
+                {
                     return true;
                 }
             }

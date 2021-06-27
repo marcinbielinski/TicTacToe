@@ -9,7 +9,8 @@ protected:
     void generateBoard() { board.resize(rows, std::vector<char>(columns, init)); }
 
     void setState(int row, int col, char player) {
-        if ((board[row][col] != 'X') && (board[row][col] != 'O')) {
+        if ((board[row][col] != 'X') && (board[row][col] != 'O'))
+        {
             while (board.size() <= row) board.emplace_back();
             while (board[row].size() <= col) board[row].push_back(char());
             board[row][col] = player;
@@ -17,14 +18,17 @@ protected:
         } else { std::cout << "This square is already taken. Choose a different one." << std::endl; }
     }
 
-    bool boardIsFull() {
+    bool boardIsFull()
+    {
         return std::all_of(board.begin(), board.end(), [](const std::vector<char> &vec) {
             return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem == 'O' || elem == 'X'; });
         });
     }
 
-    void printBoard() {
-        for (const auto &row : board) {
+    void printBoard()
+    {
+        for (const auto &row : board)
+        {
             for (const auto &elem : row) std::cout << elem << ' ';
             std::cout << std::endl;
         }
@@ -74,9 +78,12 @@ protected:
     }
 
     void changeTurn() {
-        if (active_player == Player1) {
+        if (active_player == Player1)
+        {
             active_player = Player2;
-        } else {
+        }
+        else
+        {
             active_player = Player1;
         }
     }
@@ -85,18 +92,17 @@ protected:
         if (horizontalWin() || verticalWin() || diagonalWin())
         {
             announceWinner();
-        }
-        else
-        {
+        } else {
             state = GameStates::GameOn;
         }
     }
-    bool horizontalWin ()
+
+    bool horizontalWin()
     {
         for (int i = 0; i < rows; ++i)
         {
             if (std::all_of(board[i].begin(), board[i].end(),
-                            [this](char x) { return x == active_player;}))
+                            [this](char x) { return x == active_player; }))
             {
                 return true;
             }
@@ -104,7 +110,7 @@ protected:
         return false;
     }
 
-    bool verticalWin ()
+    bool verticalWin()
     {
         for (int i = 0; i < rows - 1; ++i)
         {
@@ -116,15 +122,15 @@ protected:
         return false;
     }
 
-    bool diagonalWin ()
-    {
+    bool diagonalWin() {
         for (int i = 0; i < rows - 1; ++i)
         {
             for (int j = 0; j < columns; ++j)
             {
-                if ((board[i][j] == active_player && board[i][j] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j+2])
-                || (board[i][j+2] == active_player && board[i][j+2] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j]))
-                {
+                if ((board[i][j] == active_player && board[i][j] == board[i + 1][j + 1] &&
+                     board[i + 1][j + 1] == board[i + 2][j + 2])
+                    || (board[i][j + 2] == active_player && board[i][j + 2] == board[i + 1][j + 1] &&
+                        board[i + 1][j + 1] == board[i + 2][j])) {
                     return true;
                 }
             }
@@ -132,23 +138,8 @@ protected:
         return false;
     }
 
-//    bool diagonalWinThreeToSeven ()
-//    {
-//        for (int i = 0; i < rows - 1; ++i)
-//        {
-//            for (int j = 0; j < columns; ++j)
-//            {
-//                {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
     void checkForDraws() {
-        if (boardIsFull())
-        {
+        if (boardIsFull()) {
             announceDraw();
         }
     }
@@ -183,12 +174,10 @@ public:
         state = GameStates::GameOn;
         while (state == GameStates::GameOn) {
             makeMove();
-            if (state == GameStates::Draw)
-            {
+            if (state == GameStates::Draw) {
                 break;
             }
-            if (state == GameStates::Win)
-            {
+            if (state == GameStates::Win) {
                 break;
             }
         }

@@ -106,7 +106,7 @@ protected:
 
     bool verticalWin ()
     {
-        for (int i = 0; i < rows; ++i)
+        for (int i = 0; i < rows - 1; ++i)
         {
             if (board[0][i] == active_player && board[0][i] == board[1][i] && board[1][i] == board[2][i])
             {
@@ -115,17 +115,10 @@ protected:
         }
         return false;
     }
-//    bool diagonalWinOneToNine ()
-//    {
-//        if (board[0][0] == active_player && board[0][0] == board[1][1] && board[1][1] == board[2][2])
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
+
     bool diagonalWinOneToNine ()
     {
-        for (int i = 0; i < rows; ++i)
+        for (int i = 0; i < rows - 1; ++i)
         {
             for (int j = 0; j < columns; ++j)
             {
@@ -138,17 +131,9 @@ protected:
         return false;
     }
 
-//    bool diagonalWinThreeToSeven ()
-//    {
-//        if (board[0][2] == active_player && board[0][2] == board[1][1] && board[1][1] == board[2][0])
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
     bool diagonalWinThreeToSeven ()
     {
-        for (int i = 0; i < rows; ++i)
+        for (int i = 0; i < rows - 1; ++i)
         {
             for (int j = 0; j < columns; ++j)
             {

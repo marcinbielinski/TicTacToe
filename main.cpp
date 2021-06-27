@@ -6,8 +6,6 @@ using matrix = std::vector<std::vector<char>>;
 
 class Board {
 protected:
-    matrix board;
-
     void generateBoard() { board.resize(rows, std::vector<char>(columns, init)); }
 
     void setState(int row, int col, char player) {
@@ -20,7 +18,7 @@ protected:
     }
 
     bool boardIsFull() {
-        std::all_of(board.begin(), board.end(), [](const std::vector<char> &vec) {
+        return std::all_of(board.begin(), board.end(), [](const std::vector<char> &vec) {
             return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem == 'O' || elem == 'X'; });
         });
     }
@@ -32,6 +30,7 @@ protected:
         }
     }
 
+    matrix board;
     int rows = 3;
     int columns = 3;
     char init = '-';
@@ -39,11 +38,10 @@ protected:
 
 class Game : protected Board {
 protected:
-
     void makeMove() {
         auto chosenPos = getInput();
-        int x = (chosenPos - 1)/3;
-        int y = (chosenPos - 1)%3;
+        int x = (chosenPos - 1) / rows;
+        int y = (chosenPos - 1) % columns;
 
         setState(x, y, active_player);
         continueRoutine();
@@ -68,12 +66,11 @@ protected:
         return input;
     }
 
-
     void continueRoutine() {
-        checkForDraws();
         checkForWin();
         printBoard();
         changeTurn();
+        checkForDraws();
     }
 
     void changeTurn() {
@@ -85,57 +82,88 @@ protected:
     }
 
     void checkForWin() {
-        if ((board[0][0] == Player1) && (board[0][1] == Player1) && (board[0][2] == Player1)) {
-            announceWinner();
-        } else if ((board[0][0] == Player2) && (board[0][1] == Player2) && (board[0][2] == Player2)) {
+        if (horizontalWin() || verticalWin() || diagonalWinOneToNine() || diagonalWinThreeToSeven())
+        {
             announceWinner();
         }
+        else
+        {
+            state = GameStates::GameOn;
+        }
+    }
+    bool horizontalWin ()
+    {
+        for (int i = 0; i < rows; ++i)
+        {
+            if (std::all_of(board[i].begin(), board[i].end(),
+                            [this](char x) { return x == active_player;}))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        if ((board[1][0] == Player1) && (board[1][1] == Player1) && (board[1][2] == Player1)) {
-            announceWinner();
-        } else if ((board[1][0] == Player2) && (board[1][1] == Player2) && (board[1][2] == Player2)) {
-            announceWinner();
+    bool verticalWin ()
+    {
+        for (int i = 0; i < rows; ++i)
+        {
+            if (board[0][i] == active_player && board[0][i] == board[1][i] && board[1][i] == board[2][i])
+            {
+                return true;
+            }
         }
+        return false;
+    }
+//    bool diagonalWinOneToNine ()
+//    {
+//        if (board[0][0] == active_player && board[0][0] == board[1][1] && board[1][1] == board[2][2])
+//        {
+//            return true;
+//        }
+//        return false;
+//    }
+    bool diagonalWinOneToNine ()
+    {
+        for (int i = 0; i < rows; ++i)
+        {
+            for (int j = 0; j < columns; ++j)
+            {
+                if (board[i][j] == active_player && board[i][j] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j+2])
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-        if ((board[2][0] == Player1) && (board[2][1] == Player1) && (board[2][2] == Player1)) {
-            announceWinner();
-        } else if ((board[2][0] == Player2) && (board[2][1] == Player2) && (board[2][2] == Player2)) {
-            announceWinner();
+//    bool diagonalWinThreeToSeven ()
+//    {
+//        if (board[0][2] == active_player && board[0][2] == board[1][1] && board[1][1] == board[2][0])
+//        {
+//            return true;
+//        }
+//        return false;
+//    }
+    bool diagonalWinThreeToSeven ()
+    {
+        for (int i = 0; i < rows; ++i)
+        {
+            for (int j = 0; j < columns; ++j)
+            {
+                if (board[i][j+2] == active_player && board[i][j+2] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j])
+                {
+                    return true;
+                }
+            }
         }
-
-        if ((board[0][0] == Player1) && (board[1][0] == Player1) && (board[2][0] == Player1)) {
-            announceWinner();
-        } else if ((board[0][0] == Player2) && (board[1][0] == Player2) && (board[2][0] == Player2)) {
-            announceWinner();
-        }
-
-        if ((board[0][1] == Player1) && (board[1][1] == Player1) && (board[2][1] == Player1)) {
-            announceWinner();
-        } else if ((board[0][1] == Player2) && (board[1][1] == Player2) && (board[2][1] == Player2)) {
-            announceWinner();
-        }
-
-        if ((board[0][2] == Player1) && (board[1][2] == Player1) && (board[2][2] == Player1)) {
-            announceWinner();
-        } else if ((board[0][2] == Player2) && (board[1][2] == Player2) && (board[2][2] == Player2)) {
-            announceWinner();
-        }
-
-        if ((board[0][0] == Player1) && (board[1][1] == Player1) && (board[2][2] == Player1)) {
-            announceWinner();
-        } else if ((board[0][0] == Player2) && (board[1][1] == Player2) && (board[2][2] == Player2)) {
-            announceWinner();
-        }
-
-        if ((board[2][0] == Player1) && (board[1][1] == Player1) && (board[0][2] == Player1)) {
-            announceWinner();
-        } else if ((board[2][0] == Player2) && (board[1][1] == Player2) && (board[0][2] == Player2)) {
-            announceWinner();
-        }
+        return false;
     }
 
     void checkForDraws() {
-        if (boardIsFull()) {
+        if (boardIsFull())
+        {
             announceDraw();
         }
     }
@@ -170,6 +198,14 @@ public:
         state = GameStates::GameOn;
         while (state == GameStates::GameOn) {
             makeMove();
+            if (state == GameStates::Draw)
+            {
+                break;
+            }
+            if (state == GameStates::Win)
+            {
+                break;
+            }
         }
     }
 };

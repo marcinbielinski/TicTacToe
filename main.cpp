@@ -82,7 +82,7 @@ protected:
     }
 
     void checkForWin() {
-        if (horizontalWin() || verticalWin() || diagonalWinOneToNine() || diagonalWinThreeToSeven())
+        if (horizontalWin() || verticalWin() || diagonalWin())
         {
             announceWinner();
         }
@@ -116,13 +116,14 @@ protected:
         return false;
     }
 
-    bool diagonalWinOneToNine ()
+    bool diagonalWin ()
     {
         for (int i = 0; i < rows - 1; ++i)
         {
             for (int j = 0; j < columns; ++j)
             {
-                if (board[i][j] == active_player && board[i][j] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j+2])
+                if ((board[i][j] == active_player && board[i][j] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j+2])
+                || (board[i][j+2] == active_player && board[i][j+2] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j]))
                 {
                     return true;
                 }
@@ -131,20 +132,19 @@ protected:
         return false;
     }
 
-    bool diagonalWinThreeToSeven ()
-    {
-        for (int i = 0; i < rows - 1; ++i)
-        {
-            for (int j = 0; j < columns; ++j)
-            {
-                if (board[i][j+2] == active_player && board[i][j+2] == board[i+1][j+1] && board[i+1][j+1] == board[i+2][j])
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    bool diagonalWinThreeToSeven ()
+//    {
+//        for (int i = 0; i < rows - 1; ++i)
+//        {
+//            for (int j = 0; j < columns; ++j)
+//            {
+//                {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     void checkForDraws() {
         if (boardIsFull())

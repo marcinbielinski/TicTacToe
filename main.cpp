@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <set>
 
 using matrix = std::vector<std::vector<char>>;
 
@@ -124,7 +123,7 @@ protected:
                 {
                     break;
                 }
-                if (row == board.size()-1)
+                if (row == rows-1)
                 {
                     return true;
                 }
@@ -141,7 +140,7 @@ protected:
             {
                 break;
             }
-            if (board[i] == board.back())
+            if (i == rows - 1)
             {
                 return true;
             }
@@ -152,7 +151,7 @@ protected:
             {
                 break;
             }
-            if (i == board.size()-1)
+            if (i == rows - 1)
             {
                 return true;
             }

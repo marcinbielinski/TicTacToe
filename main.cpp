@@ -175,7 +175,7 @@ protected:
         state = GameStates::Draw;
     }
 
-    void greetings() {
+    static void greetings() {
         std::cout << "Hello! Welcome to my game of Tic-Tac-Toe. Player '0' goes first. Have fun." << std::endl;
     }
 
@@ -197,15 +197,9 @@ public:
         greetings();
         generateBoard();
         printBoard();
-        state = GameStates::GameOn;
-        while (state == GameStates::GameOn) {
+        while (state == GameStates::GameOn)
+        {
             makeMove();
-            if (state == GameStates::Draw) {
-                break;
-            }
-            if (state == GameStates::Win) {
-                break;
-            }
         }
     }
 };

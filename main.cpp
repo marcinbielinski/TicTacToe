@@ -15,6 +15,7 @@ protected:
             while (board.size() <= row) board.emplace_back();
             while (board[row].size() <= col) board[row].push_back(char());
             board[row][col] = player;
+            printBoard();
 
         } else { std::cout << "This square is already taken. Choose a different one." << std::endl; }
     }
@@ -49,7 +50,7 @@ protected:
         int y = (chosenPos - 1) % columns;
 
         setState(x, y, active_player);
-        continueRoutine();
+        checkForWin();
     }
 
     int getInput() {
@@ -71,9 +72,8 @@ protected:
         return input;
     }
 
-    void continueRoutine() {
-        checkForWin();
-        printBoard();
+    void continueRoutine()
+    {
         changeTurn();
         checkForDraws();
     }
@@ -93,7 +93,10 @@ protected:
         if (horizontalWin() || verticalWin() || diagonalWin())
         {
             announceWinner();
-        } else {
+        }
+        else
+        {
+            continueRoutine();
             state = GameStates::GameOn;
         }
     }
@@ -173,6 +176,10 @@ protected:
         state = GameStates::Draw;
     }
 
+    void greetings() {
+        std::cout << "Hello! Welcome to my game of Tic-Tac-Toe. Player '0' goes first. Have fun." << std::endl;
+    }
+
     enum Players : char {
         Player1 = 'O', Player2 = 'X'
     };
@@ -188,6 +195,7 @@ protected:
 class Runner : public Game {
 public:
     Runner() {
+        greetings();
         generateBoard();
         printBoard();
         state = GameStates::GameOn;

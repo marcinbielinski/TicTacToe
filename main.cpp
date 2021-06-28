@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 using matrix = std::vector<std::vector<char>>;
 
@@ -112,28 +113,45 @@ protected:
 
     bool verticalWin()
     {
-        for (int i = 0; i < rows - 1; ++i)
+        for (int col = 0; col < columns; ++col)
         {
-            if (board[0][i] == active_player && board[0][i] == board[1][i] && board[1][i] == board[2][i])
+            for (int row = 0; row < rows; ++row)
             {
-                return true;
+                if (board[row][col] != active_player)
+                {
+                    break;
+                }
+                if (row == board.size()-1)
+                {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    bool diagonalWin() {
-        for (int i = 0; i < rows - 1; ++i)
+    bool diagonalWin()
+    {
+        for (int i = 0; i < rows; ++i)
         {
-            for (int j = 0; j < columns; ++j)
+            if (board[i][i] != active_player )
             {
-                if ((board[i][j] == active_player && board[i][j] == board[i + 1][j + 1] &&
-                     board[i + 1][j + 1] == board[i + 2][j + 2]) ||
-                    (board[i][j + 2] == active_player && board[i][j + 2] == board[i + 1][j + 1] &&
-                     board[i + 1][j + 1] == board[i + 2][j]))
-                {
-                    return true;
-                }
+                break;
+            }
+            if (board[i] == board.back())
+            {
+                return true;
+            }
+        }
+        for (int i = 0; i < rows; ++i)
+        {
+            if (board[rows - 1 - i][0 + i] != active_player)
+            {
+                break;
+            }
+            if (i == board.size()-1)
+            {
+                return true;
             }
         }
         return false;
